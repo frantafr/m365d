@@ -23,5 +23,5 @@ The goal of this section is to describe one workaround to get those alerts autom
 # 1. Configure alert notifications
 - Go to Defender for Identity settings page, Notifications / Health issues notifications: https://security.microsoft.com/settings/identities?tabid=healthIssuesNotifications
 - Add the SOC shared mailbox email address
-![Email notification Configuration]/health/1 alert notification.png) 
+![Email notification Configuration](health/1 alert notification.png)
 
