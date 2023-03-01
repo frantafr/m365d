@@ -19,3 +19,4 @@ Defender for Identity may generate health alerts in case of an health-related is
 Unfortunately at the time of this writing (march 2023), those alerts are not available through an API.
 
 The goal of this section is to describe one workaround to get those alerts automatically sent to your Log Analytics workspace for centralized monitoring purposes.
+Thanks
