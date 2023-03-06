@@ -41,25 +41,28 @@ As alerts can be sent through email notification, the idea is to create a Logic 
 ### 1. Configure alert notifications
 - Go to Defender for Identity settings page, Notifications / Health issues notifications: https://security.microsoft.com/settings/identities?tabid=healthIssuesNotifications
 - Add the SOC shared mailbox email address
-<img src="health/1%20alert%20notification.png" width="200" alt="Email notification Configuration" />
+<img src="health/1%20alert%20notification.png" width="300" alt="Email notification Configuration" />
 
 ### 2. Create a Logic App
 - Now the idea is to create a Logic App that will automatically log the info into your own monitoring database, a log analytics workspace in this example.
 - This simple logic app is composed by a "When a new email arrives (V3)" action, a compose action and several JS inline code to manipulate the string object and the "Send Data" action responsible to send the log info through a JSON object
 >Note: As I am not a Logic app expert it might not be the more efficient way to do it; I am also looking for best practices to parse the HTML email body and grab more information from it, reach out to me if you have a recommendation :-)
-<img src="health/2%20logic%20app.png" width="200" alt="Logic app which creates a log entry in a log analytics workspace from the email health alert notification" />
+<img src="health/2%20logic%20app.png" width="300" alt="Logic app which creates a log entry in a log analytics workspace from the email health alert notification" />
 
 ### 3. Validate
 - Make sure at least one run occured (for that you need to get one new health alert sent to the mailbox)
 - Check that the Custom Logs table has been created in the log analytics workspace
 >Once you have at least received one email from MDI, you can replay it going into the history of the logic app and clicking on "Resubmit"
-<img src="health/3-Tables.png" width="200" alt="Custom table in log analytics workspace" />
+<img src="health/3-Tables.png" width="300" alt="Custom table in log analytics workspace" />
+
 - Check that a new entry exists in this table
 >It can take a few minutes
 
 ### 4. Option: create an alert in Sentinel
 - Finally, if you are using Microsoft Sentinel on top of the Log Analytics workspace, you may want to get a new incident created when such MDI health alerts occur
+
 - From the Configuration / Analytics menu, create a new NRT (near-real time) rule so every time a new entry shows up in the custom table you get an incident created 
-<img src="health/4-SentinelNRT.png" width="200" alt="Sentinel Analytics Rule (NRT)" />
+<img src="health/4-SentinelNRT.png" width="300" alt="Sentinel Analytics Rule (NRT)" />
+
 - Here is what an incident looks like
-<img src="health/5-Incident.png" width="100" alt="Sentinel Incident for MDI Health Alert" />
+<img src="health/5-Incident.png" width="300" alt="Sentinel Incident for MDI Health Alert" />
