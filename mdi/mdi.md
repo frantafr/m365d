@@ -4,6 +4,7 @@
 ### Capacity planning
 Make sure you start with this capacity planning tool execution before anything else.
 https://learn.microsoft.com/en-us/defender-for-identity/capacity-planning
+When analyzing the results, look at the peaks: maybe you have some process (backup or similar) responsible of this peak: you might optimize the required resources by applying some throttling on this process (for instance make the backup process do the job in 4 hours instead of 1).
 
 ### Script to check installation prerequisites
 Recently this nice Test-MdiReadiness.ps1 script has been made available, make sure to leverage it to simplify deployment.
@@ -24,12 +25,12 @@ Simple path => configure the proxy using the installation commandline:
 ```
 
 ## POC tips
-- Use the installatation prerequisites powershell tool to make sure to did not forget to configure some important event logs or other prerequisites.
+- Use the installatation prerequisites powershell tool to make sure you did not forget to configure some important event logs or other prerequisites.
 - Enable the "POC mode", by disabling the learning period: https://learn.microsoft.com/en-us/defender-for-identity/advanced-settings#removing-the-learning-period-for-alerts
 - Good references to simulate some attacks and learn how the product works:
     - Simulate attacks: https://github.com/DanielpFR/MDI/blob/main/MDI_Playbook_Sample.md
     - Advanced hunting: https://github.com/DanielpFR/MDI 
-    - https://learn.microsoft.com/en-us/defender-for-identity/playbooks
+    - Microsoft docs: https://learn.microsoft.com/en-us/defender-for-identity/playbooks
 
 ## Defender for Identity Health Alerts
 Defender for Identity may generate health alerts in case of an health-related issue. See https://learn.microsoft.com/en-us/defender-for-identity/health-alerts for more information.
