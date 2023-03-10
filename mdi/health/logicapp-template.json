@@ -1,0 +1,270 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "metadata": {
+        "comments": "This sample Logic App sends Microsoft Defender for Identity health alerts to a Log Analytics workspace, from the email notification received from Defender-noreply@microsoft.com. Requirements: an integration account, a log analytics workspace and an office 365 connection must exist.",
+        "author": "Francois Tachoires"
+    },
+    "parameters": {
+        "workflows_Get_MDIHealthAlerts_name": {
+            "defaultValue": "Get-MDIHealthAlerts",
+            "type": "String"
+        },
+        "IntegrationAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the existing Integration Account that should be connected to this Logic App."
+            },
+            "defaultValue": "IntegrationAccountForDemo"
+        },
+        "IntegrationAccountResourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "The resource group name that the Integration Account is in"
+            },
+            "defaultValue": "rg-integrationaccount"
+        },
+        "azureloganalyticsdatacollector_name": {
+            "type": "string",
+            "defaultValue": "azureloganalyticsdatacollector"
+        },
+        "office365_name": {
+            "type": "string",
+            "metadata": {
+                "description": "The existing office 365 connection to use"
+            },
+            "defaultValue": "office365"
+        },
+        "logicAppLocation": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "allowedValues": [
+                "[resourceGroup().location]",
+                "asia",
+                "asiapacific",
+                "australia",
+                "australiacentral",
+                "australiacentral2",
+                "australiaeast",
+                "australiasoutheast",
+                "brazil",
+                "brazilsouth",
+                "brazilsoutheast",
+                "canada",
+                "canadacentral",
+                "canadaeast",
+                "centralindia",
+                "centralus",
+                "centraluseuap",
+                "centralusstage",
+                "chinaeast",
+                "chinanorth",
+                "eastasia",
+                "eastasiastage",
+                "eastus",
+                "eastus2",
+                "eastus2euap",
+                "eastus2stage",
+                "eastusstage",
+                "europe",
+                "francecentral",
+                "francesouth",
+                "germanycentral",
+                "germanynorth",
+                "germanynortheast",
+                "germanywestcentral",
+                "global",
+                "india",
+                "japan",
+                "japaneast",
+                "japanwest",
+                "jioindiawest",
+                "koreacentral",
+                "koreasouth",
+                "northcentralus",
+                "northcentralusstage",
+                "northeurope",
+                "norwayeast",
+                "norwaywest",
+                "southafricanorth",
+                "southafricawest",
+                "southcentralus",
+                "southcentralusstage",
+                "southeastasia",
+                "southeastasiastage",
+                "southindia",
+                "switzerland",
+                "switzerlandnorth",
+                "switzerlandwest",
+                "uaecentral",
+                "uaenorth",
+                "uk",
+                "uksouth",
+                "ukwest",
+                "unitedstates",
+                "usdodeast",
+                "usdodwest",
+                "usgovarizona",
+                "usgoviowa",
+                "usgovtexas",
+                "usgovvirginia",
+                "usseceast",
+                "ussecwest",
+                "west",
+                "westcentralus",
+                "westeurope",
+                "westindia",
+                "westus",
+                "westus2",
+                "westus2stage",
+                "westus3",
+                "westusstage"
+            ],
+            "metadata": {
+                "description": "Location of the Logic App."
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('workflows_Get_MDIHealthAlerts_name')]",
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "location": "[parameters('logicAppLocation')]",
+            "properties": {
+                "integrationAccount": {
+                    "id": "[resourceId(subscription().subscriptionId, parameters('IntegrationAccountResourceGroupName'), 'Microsoft.Logic/integrationAccounts', parameters('IntegrationAccountName'))]"
+                },
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "When_a_new_email_arrives_(V3)": {
+                            "splitOn": "@triggerBody()?['value']",
+                            "type": "ApiConnectionNotification",
+                            "inputs": {
+                                "fetch": {
+                                    "method": "get",
+                                    "pathTemplate": {
+                                        "template": "/v3/Mail/OnNewEmail"
+                                    },
+                                    "queries": {
+                                        "fetchOnlyWithAttachment": false,
+                                        "folderPath": "Inbox",
+                                        "from": "Defender-noreply@microsoft.com",
+                                        "importance": "Any",
+                                        "includeAttachments": false
+                                    }
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                    }
+                                },
+                                "subscribe": {
+                                    "body": {
+                                        "NotificationUrl": "@{listCallbackUrl()}"
+                                    },
+                                    "method": "post",
+                                    "pathTemplate": {
+                                        "template": "/GraphMailSubscriptionPoke/$subscriptions"
+                                    },
+                                    "queries": {
+                                        "fetchOnlyWithAttachment": false,
+                                        "folderPath": "Inbox",
+                                        "importance": "Any"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Compose_Subject": {
+                            "runAfter": {},
+                            "type": "Compose",
+                            "inputs": "@triggerBody()?['subject']"
+                        },
+                        "Send_Data": {
+                            "runAfter": {
+                                "extract_alert_description_from_subject": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": "{\n\"severity\": \"@{body('extract_severity_from_subject')}\" ,\n\"description\": \"@{body('extract_alert_description_from_subject')}\",\n\"tenantName\": \"@{body('extract_tenant_name_from_subject')}\",\n\"serviceSource\": \"MicrosoftDefenderForIdentity\"\n}",
+                                "headers": {
+                                    "Log-Type": "MDIHealthIssues"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azureloganalyticsdatacollector']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/api/logs"
+                            }
+                        },
+                        "extract_alert_description_from_subject": {
+                            "runAfter": {
+                                "extract_tenant_name_from_subject": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "JavaScriptCode",
+                            "inputs": {
+                                "code": "var subject = workflowContext.trigger.outputs.body.subject;\r\nvar alertDescription = \"\";\r\nif (subject.includes(\"Workspace\")) \r\n{ var array = subject.split(\"] \"); \r\nif (array != null) {alertDescription = array[1];}\r\n}\r\nelse {alertDescription = \"unknown\"}\r\nreturn alertDescription;"
+                            }
+                        },
+                        "extract_severity_from_subject": {
+                            "runAfter": {
+                                "Compose_Subject": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "JavaScriptCode",
+                            "inputs": {
+                                "code": "var subject = workflowContext.trigger.outputs.body.subject;\r\nvar severity = \"\";\r\nif (subject.includes(\"[Medium]\")) { severity = \"medium\";}\r\nelse if (subject.includes(\"[High]\")) { severity = \"high\";}\r\nelse if (subject.includes(\"[Low]\")) { severity = \"low\";}\r\nelse if (subject.includes(\"[Informational]\")) { severity = \"informational\";}\r\nelse severity = \"unknown\";\r\n//var severity = subject;\r\n\r\nreturn severity;"
+                            }
+                        },
+                        "extract_tenant_name_from_subject": {
+                            "runAfter": {
+                                "extract_severity_from_subject": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "JavaScriptCode",
+                            "inputs": {
+                                "code": "var subject = workflowContext.trigger.outputs.body.subject;\r\nvar tenantName = \"\";\r\nif (subject.includes(\"Workspace\")) \r\n{ var array = subject.split(\":\"); \r\nif (array != null) {tenantName = array[0];}\r\n}\r\nelse {tenantName = \"unknown\"}\r\nreturn tenantName;"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azureloganalyticsdatacollector": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('azureloganalyticsdatacollector_name'))]",
+                                "connectionName": "[parameters('azureloganalyticsdatacollector_name')]",
+                                "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',parameters('logicAppLocation'),'/managedApis/azureloganalyticsdatacollector')]"
+                            },
+                            "office365": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('office365_name'))]",
+                                "connectionName": "[parameters('office365_name')]",
+                                "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',parameters('logicAppLocation'),'/managedApis/office365')]"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,4 +1,4 @@
-# Defender for Identity - franta cheat sheet
+# Defender for Identity - my cheat sheet
 ## Installation tips
 
 ### Capacity planning
@@ -48,6 +48,8 @@ As alerts can be sent through email notification, the idea is to create a Logic 
 - This simple logic app is composed by a "When a new email arrives (V3)" action, a compose action and several JS inline code to manipulate the string object and the "Send Data" action responsible to send the log info through a JSON object
 >Note: As I am not a Logic app expert it might not be the more efficient way to do it; I am also looking for best practices to parse the HTML email body and grab more information from it, reach out to me if you have a recommendation :-)
 <img src="health/2%20logic%20app.png" width="300" alt="Logic app which creates a log entry in a log analytics workspace from the email health alert notification" />
+
+You can find the logicapp sample template here: [JSON template]("health/logicapp-template.json")
 
 ### 3. Validate
 - Make sure at least one run occured (for that you need to get one new health alert sent to the mailbox)
