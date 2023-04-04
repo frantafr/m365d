@@ -1,6 +1,6 @@
 # Defender for Identity - my cheat sheet
 ## Installation tips
-Test
+
 ### Capacity planning
 Make sure you start with this capacity planning tool execution before anything else.
 https://learn.microsoft.com/en-us/defender-for-identity/capacity-planning
