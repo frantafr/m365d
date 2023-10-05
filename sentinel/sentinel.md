@@ -1,5 +1,5 @@
 # Sentinel - my cheat sheet
-## Correlation of quarantine log events to get all details when monitoring
+## Correlation of quarantine log events to get full monitoring details
 The customer use case is: *get an alert when a message is released from quarantine, providing also the name of the admin who performed the action.*
 Actually it is not trivial as the EmailEvents and EmailPostDeliveryEvents M365D tables do not contain the admin username information.
 In addition, the quarantine log you can get from the compliance.microsoft.com portal (Audit Logs) is not available either in the OfficeActivity table that comes today (October 2023) with the Microsoft 365 native connector of Microsoft Sentinel.
@@ -35,7 +35,7 @@ Thanks to this message, and looking at the run.ps1 file, I understood there was 
 
 ### Final: create the right KQL query
 Now you have the data, you are able to join the info from the different table.
-Here is an example.
+Here is an example. Here **I have both the details of the message released from quarantine as well as the admin name who performed the action!**
 ```
 EmailPostDeliveryEvents
 | where Action == "Quarantine release"
