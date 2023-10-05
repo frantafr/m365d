@@ -18,7 +18,8 @@ Here is the step by step I followed in my case:
 <img src="ast\02 create payload.png" width="600" alt="Payload creation: name" />
 
 >Configuration
-<img src="ast\03 create payload.png" width="600" alt="Payload creation: configuration" />
+<img src="ast\03 create payload.png" width="600" alt="Payload creation: configuration (code)" />
+<img src="ast\payload config.png" width="600" alt="Payload creation: configuration (text)" />
 
 >Indicators
 <img src="ast\04 create payload.png" width="600" alt="Payload creation: indicators" />
