@@ -6,7 +6,7 @@ In addition, the quarantine log you can get from the compliance.microsoft.com po
 
 So here is a way to fulfill this ask.
 
-### Prequisites
+### Prerequisites
 In Microsoft Sentinel, you have already connected M365 Defender and M365, using the native connectors:
 - https://learn.microsoft.com/en-us/azure/sentinel/connect-microsoft-365-defender?tabs=MDE
 - https://learn.microsoft.com/en-us/azure/sentinel/data-connectors/microsoft-365
@@ -31,7 +31,7 @@ For troubleshooting, I went to "Log Stream" menu, there I grab the following err
 
 2023-10-05T08:25:08Z   [Error]   Executed 'Functions.TimerTrigger' (Failed, Id=85c42ab3-ca70-43d7-8eb9-4f7c1a18641e, Duration=8247ms)
 ```
-Thanks to this message, and looking at the run.ps1 file, I understood there was an error with my LoginEndpoint variable. It was "https://login.microsoftonline.com/" while the script was expecting "https://login.microsoftonline.com"!
+Thanks to this message, and looking at the run.ps1 file, I understood there was an error with my LoginEndpoint variable. It was "https://login.microsoftonline.com/" while the script was expecting "https://login.microsoftonline.com"! Just one "/" was responsible of the error...
 
 ### Final: create the right KQL query
 Now you have the data, you are able to join the info from the different table.
@@ -44,7 +44,7 @@ EmailPostDeliveryEvents
 | join (EmailEvents) on NetworkMessageId
 | project TimeGenerated, ActionTrigger, ActionType, ActionResult, RecipientEmailAddress, AdminId=UserId_s, Operation_s, NetworkMessageId, Subject, SenderFromAddress, AuthenticationDetails, ConfidenceLevel
 ```
-<img src="kql/kql%20release%20messages%20audit%20log.png" width="500" alt="KQL query to get full details of a quarantine release action" />
+<img src="kql/kql%20release%20messages%20audit%20log.png" width="800" alt="KQL query to get full details of a quarantine release action" />
 
 ### What's next?
 You can create an alert from this query, a report in a workbook or a full workflow depending on your needs!
