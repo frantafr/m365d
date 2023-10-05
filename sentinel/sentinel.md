@@ -1,8 +1,8 @@
 # Sentinel - my cheat sheet
 ## Correlation of quarantine log events to get all details when monitoring
 The customer use case is: *get an alert when a message is released from quarantine, providing also the name of the admin who performed the action.*
-Actually it is not trivial as the EmailEvents and EmailPostDeliveryEvents M365D table do not contain the admin username information.
-In addition, the qurantine log you can get from the compliance.microsoft.com portal (Audi Logs) is not available either in the OfficeActivity table that comes today (October 2023) with the Microsoft 365 native connector of Microsoft Sentinel.
+Actually it is not trivial as the EmailEvents and EmailPostDeliveryEvents M365D tables do not contain the admin username information.
+In addition, the quarantine log you can get from the compliance.microsoft.com portal (Audit Logs) is not available either in the OfficeActivity table that comes today (October 2023) with the Microsoft 365 native connector of Microsoft Sentinel.
 
 So here is a way to fulfill this ask.
 
@@ -24,6 +24,15 @@ OfficeActivity | take 10
 ### Use the community Azure Function to get Audit.General logs from O365 Management API
 See and follow https://github.com/Azure/Azure-Sentinel/tree/master/DataConnectors/O365%20Data
 
+One personal tip: during the installation I hit an issue, the O365_CL table was not appearing while the Azure Function looked ok.
+For troubleshooting, I went to "Log Stream" menu, there I grab the following error: 
+```
+2023-10-05T08:25:08Z   [Error]   EXCEPTION: MCASActivity-SecurityEvents: Invalid Login Endpoint Uri. Exception             :     Type    : Microsoft.PowerShell.Commands.WriteErrorException     Message : MCASActivity-SecurityEvents: Invalid Login Endpoint Uri.     HResult : -2146233087 CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,_TimerTrigger_ InvocationInfo        :     MyCommand        : _TimerTrigger_     ScriptLineNumber : 257     OffsetInLine     : 3     HistoryId        : 1     ScriptName       : C:\home\site\wwwroot\TimerTrigger\run.ps1     Line             : Write-Error -Message "MCASActivity-SecurityEvents: Invalid Login Endpoint Uri." -ErrorAction Stop                             PositionMessage  : At C:\home\site\wwwroot\TimerTrigger\run.ps1:257 char:3                        +         Write-Error -Message "MCASActivity-SecurityEvents: Invalid Lo …                        +         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     PSScriptRoot     : C:\home\site\wwwroot\TimerTrigger     PSCommandPath    : C:\home\site\wwwroot\TimerTrigger\run.ps1     InvocationName   : _TimerTrigger_     CommandOrigin    : Internal ScriptStackTrace      : at <ScriptBlock>, C:\home\site\wwwroot\TimerTrigger\run.ps1: line 257
+
+2023-10-05T08:25:08Z   [Error]   Executed 'Functions.TimerTrigger' (Failed, Id=85c42ab3-ca70-43d7-8eb9-4f7c1a18641e, Duration=8247ms)
+```
+Thanks to this message, and looking at the run.ps1 file, I understood there was an error with my LoginEndpoint variable. It was "https://login.microsoftonline.com/" while the script was expecting "https://login.microsoftonline.com"!
+
 ### Final: create the right KQL query
 Now you have the data, you are able to join the info from the different table.
 Here is an example.
@@ -35,7 +44,7 @@ EmailPostDeliveryEvents
 | join (EmailEvents) on NetworkMessageId
 | project TimeGenerated, ActionTrigger, ActionType, ActionResult, RecipientEmailAddress, AdminId=UserId_s, Operation_s, NetworkMessageId, Subject, SenderFromAddress, AuthenticationDetails, ConfidenceLevel
 ```
-<img src="kql/kql%20release%20messages%20audit%20log.png" width="300" alt="KQL query to get full details of a quarantine release action" />
+<img src="kql/kql%20release%20messages%20audit%20log.png" width="500" alt="KQL query to get full details of a quarantine release action" />
 
 ### What's next?
 You can create an alert from this query, a report in a workbook or a full workflow depending on your needs!
