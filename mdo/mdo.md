@@ -18,6 +18,7 @@ Here is the step by step I followed in my case:
 <img src="ast\02 create payload.png" width="600" alt="Payload creation: name" />
 
 >Configuration
+**Important note: for production use, you must deploy your own version of the QR code generator, to keep full control of the whole process, as explained in Cam's article.** He published the source code in Github.
 <img src="ast\03 create payload.png" width="600" alt="Payload creation: configuration (code)" />
 <img src="ast\payload config.png" width="600" alt="Payload creation: configuration (text)" />
 
