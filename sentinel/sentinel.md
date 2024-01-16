@@ -4,7 +4,9 @@ The customer use case is: *get an alert when a message is released from quaranti
 Actually it is not trivial as the EmailEvents and EmailPostDeliveryEvents M365D tables do not contain the admin username information.
 In addition, the quarantine log you can get from the compliance.microsoft.com portal (Audit Logs) is not available either in the OfficeActivity table that comes today (October 2023) with the Microsoft 365 native connector of Microsoft Sentinel.
 
-So here is a way to fulfill this ask.
+UPDATE Jan 2024: there is another option, leveraging the CloudAppEvents table of Defender for Cloud Apps! If you have the product, this is the simplest way, so move to: https://github.com/frantafr/m365d/blob/main/xdr/xdr.md#interesting-advanced-hunting-queries-with-cloudappevents-table
+
+Here is a way to fulfill this ask.
 
 ### Prerequisites
 In Microsoft Sentinel, you have already connected M365 Defender and M365, using the native connectors:
