@@ -40,6 +40,22 @@ CloudAppEvents
 //| project SPN, ActionType, Count | render columnchart //uncomment if you want a columnchart
 ```
 
+- Review "add app role assignment to service principal" activity logs
+```
+CloudAppEvents
+    //| where ActionType contains "service principal"
+    | where ActionType == "Add app role assignment to service principal." // comment if you want to enlarge the search
+    | extend extProperties=parse_json(RawEventData.ModifiedProperties)
+    | mv-apply extProperties on (
+        where tostring(extProperties.Name) == "AppRole.DisplayName" | project NewPermission=tostring(extProperties.NewValue)
+    )
+    | extend extProperties=parse_json(RawEventData.ModifiedProperties)
+    | mv-apply extProperties on (
+        where tostring(extProperties.Name) == "ServicePrincipal.DisplayName" | project SPNDisplayName=tostring(extProperties.NewValue)
+    )
+    | project Timestamp, ActionBy=AccountDisplayName, ActionType, SPNDisplayName, AppId=AccountId, NewPermission, ActivityObjects, RawEventData
+```
+
 - Logon spikes for SPNs, compared to baseline? Maybe something unusual is happening...🕵️‍♂️
 ```
 //credit: https://github.com/microsoft/Microsoft-365-Defender-Hunting-Queries/blob/master/Webcasts/TrackingTheAdversary/Episode%203%20-%20Summarizing%2C%20Pivoting%2C%20and%20Joining.txt
