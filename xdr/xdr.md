@@ -27,6 +27,7 @@ DeliveryAction, LatestDeliveryAction, LatestDeliveryLocation, ThreatTypes1, Repo
 
 ## Interesting advanced hunting queries focusing on non-human identities (SPNs / OAuth apps / workload identities)
 - List/Visualize SPNs with activities in Exchange Online
+```
 let spns = (AADSpnSignInEventsBeta
 | project ApplicationId, Application
 | distinct ApplicationId, Application);
@@ -37,6 +38,7 @@ CloudAppEvents
 | summarize Count = count() by SPN=Application1, ActionType, Application, bin(Timestamp, 1d)
 | order by SPN, Timestamp asc
 //| project SPN, ActionType, Count | render columnchart //uncomment if you want a columnchart
+```
 
 - Logon spikes for SPNs, compared to baseline? Maybe something unusual is happening...🕵️‍♂️
 ```
