@@ -26,6 +26,18 @@ DeliveryAction, LatestDeliveryAction, LatestDeliveryLocation, ThreatTypes1, Repo
 ```
 
 ## Interesting advanced hunting queries focusing on non-human identities (SPNs / OAuth apps / workload identities)
+- List/Visualize SPNs with activities in Exchange Online
+let spns = (AADSpnSignInEventsBeta
+| project ApplicationId, Application
+| distinct ApplicationId, Application);
+CloudAppEvents
+| where AccountId in (spns)
+| where Application == "Microsoft Exchange Online" //comment or change resource to monitor (Microsoft Azure, Microsoft 365, Microsoft SharePoint Online, Microsoft Power BI)
+| join kind=inner spns on $left.AccountId == $right.ApplicationId
+| summarize Count = count() by SPN=Application1, ActionType, Application, bin(Timestamp, 1d)
+| order by SPN, Timestamp asc
+//| project SPN, ActionType, Count | render columnchart //uncomment if you want a columnchart
+
 - Logon spikes for SPNs, compared to baseline? Maybe something unusual is happening...🕵️‍♂️
 ```
 //credit: https://github.com/microsoft/Microsoft-365-Defender-Hunting-Queries/blob/master/Webcasts/TrackingTheAdversary/Episode%203%20-%20Summarizing%2C%20Pivoting%2C%20and%20Joining.txt
