@@ -103,7 +103,8 @@ Tip to change the Table’s Output Stream *without Azure cloudshell*, but by usi
 - Modify the value of outputStream from your custom log table name to Microsoft-CommonSecurityLog
 - Click Save, Next, Create
 
-Configuring ZIA for Cloud NSS-Based Log Export: a step prone to error is "feed output format". Here it is:
+Configuring ZIA for Cloud NSS-Based Log Export: a step prone to error is "feed output format".
+
 Cloud NSS Feeds for Web Logs:
 ```
 \{"sourcetype":"zscalernss-web", "TimeGenerated":"%d{yy}-%02d{mth}-%02d{dd} %02d{hh}:%02d{mm}:%02d{ss}", "act":"%s{action}", "reason":"%s{reason}", "app":"%s{proto}", "dhost":"%s{ehost}", "dst":"%s{sip}", "src":"%s{cip}", "sourceTranslatedAddress":"%s{cintip}", "in":"%d{respsize}", "out":"%d{reqsize}", "request":"%s{eurl}", "requestContext":"%s{ereferer}", "outcome":"%s{respcode}", "requestClientApplication":"%s{ua}", "requestMethod":"%s{reqmethod}", "suser":"%s{login}", "spriv":"%s{location}", "externalId":"%d{recordid}", "fileType":"%s{filetype}", "destinationServiceName":"%s{appname}", "cat":"%s{urlcat}", "deviceDirection":"1", "cn1":"%d{riskscore}", "cn1Label":"riskscore", "cs1":"%s{dept}", "cs1Label":"dept", "cs2":"%s{urlcat}", "cs2Label":"urlcat", "cs3":"%s{malwareclass}", "cs3Label":"malwareclass", "cs4":"%s{malwarecat}", "cs4Label":"malwarecat", "cs5":"%s{threatname}", "cs5Label":"threatname", "cs6":"%s{bamd5}", "cs6Label":"md5hash", "rulelabel":"%s{rulelabel}", "ruletype":"%s{ruletype}", "urlclass":"%s{urlclass}", "DeviceVendor":"Zscaler", "DeviceProduct":"NSSWeblog", "devicemodel":"%s{devicemodel}", "flexString1":"%s{devicemodel}", "flexString1Label":"devicemodel", "flexString2":"%s{urlclass}", "flexString2Label":"urlclass"\}
