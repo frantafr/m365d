@@ -160,3 +160,8 @@ $uri = "$dceEndpoint/dataCollectionRules/$dcrImmutableId/streams/$customTable"+"
 $uploadResponse = Invoke-RestMethod -Uri $uri -Method "Post" -Body $body -Headers $headers
 #Invoke-WebRequest -UseBasicParsing -Uri $uri -Method "Post" -Body $body -Headers $headers
 ```
+
+Troubleshooting tips in Sentinel:
+- Start with the Metrics reports (Data Collection Rule / Monitoring section)
+- For details, at the Data Collection Rule level, create a new diagnostic setting
+- Several minutes after you should see a DCRLogErrors table
