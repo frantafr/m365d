@@ -95,3 +95,20 @@ CloudAppEvents
 | summarize count() by SPN=Application1, bin(Timestamp, interval)
 | render timechart
 ```
+
+## Pro tip Defender; taking actions on multiple devices at the same time
+Of course you can quickly take an action from the device page (isolate or run AV scan for exemple). But what if you want to do that on multiple devices at once? 
+Currently you cannot to this from the Devices page but you can from Advanced Hunting!
+- Click on Advanced Hunting
+- Enter your query with appropriate filtering
+<img src="kql/multi1.png" width="800" alt="Advanced Hunting - taking actions to multiple devices" />
+- Select devices and click on Take actions button
+<img src="kql/multi2.png" width="800" alt="Advanced Hunting - taking actions to multiple devices" />
+- Check the action to take and click next
+<img src="kql/multi3.png" width="800" alt="Advanced Hunting - taking actions to multiple devices" />
+- Review the scope of devices targeted and click next
+<img src="kql/multi4.png" width="800" alt="Advanced Hunting - taking actions to multiple devices" />
+- Enter a remediation name, a description and click Submit
+<img src="kql/multi5.png" width="800" alt="Advanced Hunting - taking actions to multiple devices" />
+- Review the results and if necessary click on Action center to pivote to this view
+<img src="kql/multi6.png" width="800" alt="Advanced Hunting - taking actions to multiple devices" />
