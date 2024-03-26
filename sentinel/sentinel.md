@@ -54,7 +54,7 @@ You can create an alert from this query, a report in a workbook or a full workfl
 ## Zscaler NSS to Sentinel (cloud to cloud)
 Well, there is a nice cloud to cloud integration between Zscaler NSS and Microsoft Sentinel, and a documentation published here: https://help.zscaler.com/zscaler-technology-partners/zscaler-and-microsoft-sentinel-deployment-guide.
 If you follow it scrupulously it will eventually work... But the copy/paste from the pdf documentation to the Azure and Zscaler console is just a nightmare, so here are the different instructions to make life easier.
-<img src="img/ZscalerToSentinelDocExtract.png" width="800" alt="Architecture overview illustration - extracted from Zscaler documentation" center/>
+<p align="center"><img src="img/ZscalerToSentinelDocExtract.png" width="800" alt="Architecture overview illustration - extracted from Zscaler documentation" /></p>
 
 Next, I will put important data for web logs configuration "Configuring Sentinel for Cloud NSS-Based Log Ingestion" (p17 to p52). You may adapt it with your variables own values when necessary.
 Sample of Web Logs (p27):
