@@ -52,7 +52,8 @@ EmailPostDeliveryEvents
 You can create an alert from this query, a report in a workbook or a full workflow depending on your needs!
 
 ## Zscaler NSS to Sentinel (cloud to cloud)
-Well, there is a nice cloud to cloud integration between Zscaler NSS and Microsoft Sentinel, and a documentation published here: https://help.zscaler.com/zscaler-technology-partners/zscaler-and-microsoft-sentinel-deployment-guide.
+Well, there is a nice cloud to cloud integration between Zscaler NSS and Microsoft Sentinel, and a documentation published here: https://help.zscaler.com/zscaler-technology-partners/zscaler-and-microsoft-sentinel-deployment-guide. You can also read this interesting blog post: https://www.zscaler.com/blogs/product-insights/elevating-cybersecurity-introducing-zscaler-and-microsoft-sentinel-s-new#cloud-nss-for-zia-log-ingestion-into-microsoft-sentinel.
+
 If you follow it scrupulously it will eventually work... But the copy/paste from the pdf documentation to the Azure and Zscaler console is just a nightmare, so here are the different instructions to make life easier.
 <p align="center"><img src="img/ZscalerToSentinelDocExtract.png" width="800" alt="Architecture overview illustration - extracted from Zscaler documentation" /></p>
 
