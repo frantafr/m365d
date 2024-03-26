@@ -57,6 +57,7 @@ If you follow it scrupulously it will eventually work... But the copy/paste from
 <p align="center"><img src="img/ZscalerToSentinelDocExtract.png" width="800" alt="Architecture overview illustration - extracted from Zscaler documentation" /></p>
 
 Next, I will put important data for web logs configuration "Configuring Sentinel for Cloud NSS-Based Log Ingestion" (p17 to p52). You may adapt it with your variables own values when necessary.
+
 Sample of Web Logs (p27):
 ```
 [
