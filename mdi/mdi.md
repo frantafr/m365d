@@ -38,8 +38,8 @@ Unfortunately at the time of this writing (march 2023), those alerts are not ava
 
 UPDATE APRIL 2023: there is also the option to send health alerts by using the syslog agent! See https://learn.microsoft.com/en-us/defender-for-identity/notifications#syslog-notifications
 
+[!IMPORTANT]
 **-- IMPORTANT UPDATE APRIL 2024 --**
-
 **Now those alerts are available through the Microsoft Graph API (beta), so the section after is becoming obsolete!**
 **See https://learn.microsoft.com/en-us/graph/api/resources/security-healthissue?view=graph-rest-beta** 
 
