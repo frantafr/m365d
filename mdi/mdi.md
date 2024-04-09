@@ -39,6 +39,10 @@ Unfortunately at the time of this writing (march 2023), those alerts are not ava
 Note: there is also the option to send health alerts by using the syslog agent!
 See https://learn.microsoft.com/en-us/defender-for-identity/notifications#syslog-notifications
 
+-- IMPORTANT UPDATE APRIL 2024 --
+**Now those alerts are available through the API, so the section after is becoming obsolete!**
+**See https://learn.microsoft.com/en-us/graph/api/resources/security-healthissue?view=graph-rest-beta** 
+
 The goal of this section is to describe one workaround to get those alerts automatically sent to your Log Analytics workspace for centralized monitoring purposes.
 As alerts can be sent through email notification, the idea is to create a Logic App that will parse this email and create a new log entry in a Log Analytics Workspace.
 
