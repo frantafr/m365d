@@ -35,12 +35,12 @@ Simple path => configure the proxy using the installation commandline:
 ## Defender for Identity Health Alerts
 Defender for Identity may generate health alerts in case of an health-related issue. See https://learn.microsoft.com/en-us/defender-for-identity/health-alerts for more information.
 Unfortunately at the time of this writing (march 2023), those alerts are not available through an API.
--- UPDATE APRIL 2023 --
-Note: there is also the option to send health alerts by using the syslog agent!
-See https://learn.microsoft.com/en-us/defender-for-identity/notifications#syslog-notifications
 
--- IMPORTANT UPDATE APRIL 2024 --
-**Now those alerts are available through the API, so the section after is becoming obsolete!**
+UPDATE APRIL 2023: there is also the option to send health alerts by using the syslog agent! See https://learn.microsoft.com/en-us/defender-for-identity/notifications#syslog-notifications
+
+**-- IMPORTANT UPDATE APRIL 2024 --**
+
+**Now those alerts are available through the Microsoft Graph API (beta), so the section after is becoming obsolete!**
 **See https://learn.microsoft.com/en-us/graph/api/resources/security-healthissue?view=graph-rest-beta** 
 
 The goal of this section is to describe one workaround to get those alerts automatically sent to your Log Analytics workspace for centralized monitoring purposes.
