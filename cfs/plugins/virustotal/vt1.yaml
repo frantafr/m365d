@@ -21,7 +21,7 @@ paths:
                   required: true
                   description: The domain address to lookup
             responses:
-                200:
+                "200":
                     description: OK
     /api/v3/ip_addresses/{ip}:
         get:
@@ -35,7 +35,7 @@ paths:
                   required: true
                   description: The IP address to lookup
             responses:
-                200:
+                "200":
                     description: OK
     /api/v3/urls:
         post:
@@ -49,7 +49,7 @@ paths:
                   required: true
                   description: Submit a URL for scanning
             responses:
-                200:
+                "200":
                     description: OK
     /api/v3/analyses/{id}:
         get:
@@ -63,7 +63,7 @@ paths:
                   required: true
                   description: Get the Url analysis result by submitting the ID from VTUrlSubmission
             responses:
-                200:
+                "200":
                     description: OK
     /api/v3/resolutions/{ip}{host}:
         get:
@@ -83,7 +83,7 @@ paths:
                   required: true
                   description: The host you would like to get DNS resolution
             responses:
-                200:
+                "200":
                     description: OK
     /api/v3/files/{id}:
         get:
@@ -97,7 +97,7 @@ paths:
                   required: true
                   description: The File Hash (SHA-256, SHA-1 or MD5) you would like to generate a report
             responses:
-                200:
+                "200":
                     description: OK
-                400:
+                "400":
                     description: No File found
