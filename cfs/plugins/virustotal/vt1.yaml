@@ -1,0 +1,103 @@
+openapi: 3.0.0
+
+info:
+    title: Virus Total Reports
+    description: Virus Total Reports
+    version: "v2"
+
+servers:
+    - url: https://www.virustotal.com/
+
+paths:
+    /api/v3/domains/{domain}:
+        get:
+            operationId: VTDomainReport
+            summary: Lookup domain information
+            parameters:
+                - in: path
+                  name: domain
+                  schema:
+                      type: string
+                  required: true
+                  description: The domain address to lookup
+            responses:
+                200:
+                    description: OK
+    /api/v3/ip_addresses/{ip}:
+        get:
+            operationId: VTIPReport
+            summary: Lookup IP information
+            parameters:
+                - in: path
+                  name: ip
+                  schema:
+                      type: string
+                  required: true
+                  description: The IP address to lookup
+            responses:
+                200:
+                    description: OK
+    /api/v3/urls:
+        post:
+            operationId: VTUrlSubmission
+            summary: Submit a URL for scanning
+            parameters:
+                - in: query
+                  name: url
+                  schema:
+                      type: string
+                  required: true
+                  description: Submit a URL for scanning
+            responses:
+                200:
+                    description: OK
+    /api/v3/analyses/{id}:
+        get:
+            operationId: VTGetUrlIDReport
+            summary: Get the Url analysis result by submitting the ID from VTUrlSubmission
+            parameters:
+                - in: path
+                  name: id
+                  schema:
+                      type: string
+                  required: true
+                  description: Get the Url analysis result by submitting the ID from VTUrlSubmission
+            responses:
+                200:
+                    description: OK
+    /api/v3/resolutions/{ip}{host}:
+        get:
+            operationId: VTDNSResolution
+            summary: Get the Domain DNS Resolution
+            parameters:
+                - in: path
+                  name: ip
+                  schema:
+                      type: string
+                  required: true
+                  description: The IP address you would like to get DNS resolution
+                - in: path
+                  name: host
+                  schema:
+                      type: string
+                  required: true
+                  description: The host you would like to get DNS resolution
+            responses:
+                200:
+                    description: OK
+    /api/v3/files/{id}:
+        get:
+            operationId: VTFileReport
+            summary: Submit a File Hash for Reporting
+            parameters:
+                - in: path
+                  name: id
+                  schema:
+                      type: string
+                  required: true
+                  description: The File Hash (SHA-256, SHA-1 or MD5) you would like to generate a report
+            responses:
+                200:
+                    description: OK
+                400:
+                    description: No File found
